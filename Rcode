@@ -1,0 +1,67 @@
+```{r libraries}
+# required libraries
+library("PKPDmisc")
+library("ggplot2")
+library("mlxR")
+library("reshape2")
+```
+
+```{r}
+# where to start analysis
+## 1. pk profile of 100 mg iv bolus (sd), CL = 0.1 L/hr, V = 1 L
+adm <- list(time=c(0), amount=100)
+t   <- seq(0, 30, by=0.1)
+param   <- c(V=1, Cl=0.1)
+
+res   <- pkmodel(time = t, treatment = adm, parameter = param)
+
+print(ggplot(data=res, aes(x=time, y=cc)) + geom_line(size=1) +
+  xlab("time (h)") + ylab("concentration (mg/L)"))
+```
+
+```{r}
+## 2. pk profile of 100 mg iv bolus, ld (t = 0), md (q= 24, 12, 6 hr), cl = 0.1 L/hr, v = 1 L
+adm2 <- list(time=c(0, 6, 12, 24), amount=100)
+t2 <- seq(0, 72, by=0.1)
+param2 <- c(V=1, Cl=0.1)
+
+res2 <- pkmodel(time = t2, treatment = adm2, parameter = param2)
+
+print(ggplot(data=res2, aes(x=time, y=cc)) + geom_line(size=1) +
+        xlab("time (h)") + ylab("concentration (mg/L)"))
+```
+
+```{r}
+## 3. pk profile of 100 mg oral (sd), Cl = 0.1 L/hr, V = 1 L, ka = 0.5/hr, F = 0.8
+adm3 <- list(time=c(0), amount=100)
+t3 <- seq(0, 30, by = 0.1)
+param3 <- c(V=1, Cl=0.1, ka=0.5, p=0.8)
+
+res3 <- pkmodel(time = t3, treatment = adm3, parameter = param3)
+
+print(ggplot(data=res3, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time (h)") + ylab("concentration (mg/L)"))
+```
+
+```{r}
+## 4. pk profile of 100 mg oral, ld (t=0), md (t = 6, 12, 24 hr), Cl = 0.1 L/hr, V = 1 L, ka = 0.5/hr, F = 0.8
+adm4 <- list(time=c(0, 6, 12, 24), amount=100)
+t4 <- seq(0, 72, by = 0.1)
+param4 <- c(V=1, Cl=0.1, ka=0.5, p=0.8)
+
+res4 <- pkmodel(time = t4, treatment = adm4, parameter = param4)
+
+print(ggplot(data=res4, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time (h)") + ylab("concentration (mg/L)"))
+```
+
+```{r}
+## superimpose iv bolus graphs
+adm <- list(time=c(0), amount=100)
+adm2 <- list(time=c(0, 6, 12, 24), amount=100)
+t <- seq(0, 50, by=0.1)
+param <- c(V=1, Cl=0.1)
+
+res <- pkmodel(t,adm,param)
+
+r <- melt(data=res, id='time', variable_name='c')
+print(ggplot(r, aes(time,value)) + geom_line(aes(color= "adm2"), size=3) + geom_point(aes(color = "adm"),size=1) + ylab('concentration') + guides(colour=guide_legend(title=NULL)) + theme(legend.position=c(.9, .8)))
+```
