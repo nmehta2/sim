@@ -9,7 +9,6 @@ library("mlxR")
 library("reshape2")
 library("knitr")
 library("dplyr")
-??mlxR
 ```
 
 ```{r}
