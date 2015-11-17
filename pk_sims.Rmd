@@ -116,7 +116,7 @@ combined_output <- bind_rows(res8 %>% mutate(profile = "100mg Q24"),
 combined_output %>%
     ggplot(aes(x = time, y = cc, color = factor(profile))) + 
     geom_line() + xlab("time(h)") + ylab("concentration (mg/L)") +
-    scale_color_discrete(name = "Dosing Regimen")
+    scale_color_discrete(name = "Dosing Regimen") + theme_bw() + base_theme()
 ```
 
 # Overlay plots - iv
@@ -130,5 +130,5 @@ combined_output <- bind_rows(res %>% mutate(profile = "100mg SD"),
 combined_output %>%
   ggplot(aes(x = time, y = cc, color = factor(profile))) +
   geom_line() + xlab("time(h)") + ylab("concentration (mg/L)") +
-  scale_color_discrete(name = "Dosing Regimen")
+  scale_color_discrete(name = "Dosing Regimen") + theme_bw() + base_theme()
 ```
