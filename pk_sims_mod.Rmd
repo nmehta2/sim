@@ -29,37 +29,50 @@ knitr::opts_chunk$set(echo=FALSE)
 
 # 1. pk profile of 100 mg iv bolus (sd), CL = 0.1 L/hr, V = 1 L
 ```{r}
-adm <- list(time=c(0), amount=100)
-t   <- seq(0, 120, by=0.1)
-param   <- c(V=1, Cl=0.1)
+adm1 <- list(time=c(0), amount=100)
+t1   <- seq(0, 120, by=0.1)
+param1   <- c(V=1, Cl=0.1)
 
-res   <- pkmodel(time = t, treatment = adm, parameter = param)
+res1   <- pkmodel(time = t1, treatment = adm1, parameter = param1)
 
-ggplot(data=res, aes(x=time, y=cc)) + geom_line(size=1) +
+ggplot(data=res1, aes(x=time, y=cc)) + geom_line(size=1) +
   xlab("time (h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
 ```
-## 1a. Patient has half of normal clearance (PK profile of 100 mg iv bolus (sd), CL = 0.05 L/hr, V= 1 L)
+## 1a. Patient's clearance decreases by 25%. (PK profile of 100 mg iv bolus (sd), CL = 0.075 L/hr, V= 1 L)
 ```{r}
 adm1a <- list(time=c(0), amount=100)
 t1a <- seq(0, 120, by=0.1)
-param1a <- c(V=1, Cl=0.05)
+param1a <- c(V=1, Cl=0.075)
 
 res1a <- pkmodel(time = t1a, treatment = adm1a, parameter = param1a)
 
 ggplot(data=res1a, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
 ```
 
-## 1b. Patient's clearance drops by 25%. (PK profile of 100 mg iv bolus (sd), CL3 = 0.075 L/hr, V = 1 L)
+## 1b. Patient's clearance decreases by 50%. (PK profile of 100 mg iv bolus (sd), CL = 0.05 L/hr, V = 1 L)
 ```{r}
+adm1b <- list(time=c(0), amount=100)
+t1b <- seq(0, 120, by=0.1)
+param1b <- c(V=1, Cl=0.05)
 
+res1b <- pkmodel(time = t1b, treatment = adm1b, parameter = param1b)
+
+ggplot(data=res1b, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
 ```
-## 1c. Overlay PK profile of 100 mg iv bolus (sd), CL1 = 0.1 L/hr, CL2 = 0.05 L/hr, CL3 = 0.075 L/hr
+
+## 1c. Overlay PK profiles of patient with normal clearance and decreased clearance (PK profile of 100 mg iv bolus (sd), V = 1 L, CL1 = 0.1 L/hr, 0.05 L/hr, 0.075 L/hr)
 ```{r}
+combined_output <- bind_rows(res1 %>% mutate(profile = "100mg SD"),
+                              res1a %>% mutate(profile = "100mg SD, CL = 0.075 L/hr"),
+                              res1b %>% mutate(profile = "100mg SD, CL = 0.05 L/hr"))
 
-
+combined_output %>%
+ggplot(aes(x = time, y = cc, color = factor(profile))) +
+geom_line() + xlab("time(h)") + ylab("concentration (mg/L)") +
+scale_color_discrete(name = "Clearance Changes") + theme_bw() + base_theme()
 ```
 
-# 2. pk profile of 100 mg iv bolus, ld (t = 0), md (q= 6 hr), cl = 0.1 L/hr, v = 1 L
+# 2. PK profile of 100 mg iv bolus, LD (t = 0), MD (q= 6 hr), CL = 0.1 L/hr, V = 1 L
 ```{r}
 adm2 <- list(time=seq(0, 120, by = 6), amount=100)
 t2 <- seq(0, 120, by=0.1)
@@ -68,7 +81,46 @@ param2 <- c(V=1, Cl=0.1)
 res2 <- pkmodel(time = t2, treatment = adm2, parameter = param2)
 
 ggplot(data=res2, aes(x=time, y=cc)) + geom_line(size=1) +
-        xlab("time (h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
+        xlab("time (h)") + ylab("concentration (mg/L)") +
+        theme_bw() + base_theme()
+```
+
+## 2a. Patient's clearance decreases by 25%. (PK profile of 100 mg iv bolus, LD (t=0), MD (q=6hr), CL = 0.075 L/hr, V= 1 L)
+```{r}
+adm2a <- list(time=seq(0, 120, by = 6), amount=100)
+t2a <- seq(0, 120, by=0.1)
+param2a <- c(V=1, Cl=0.075)
+
+res2a <- pkmodel(time = t2a, treatment = adm2a, parameter = param2a)
+
+ggplot(data=res2a, aes(x=time, y=cc)) + geom_line(size=1) +
+  xlab("time(h)") + ylab("concentration(mg/L)") +
+  theme_bw() + base_theme()
+
+```
+
+## 2b. Patient's clearance decreases by 50%. (PK profile of 100 mg iv bolus, LD (t=0), MD (q=6hr), CL = 0.05 L/hr, V= 1 L)
+```{r}
+adm2b <- list(time=seq(0, 120, by = 6), amount = 100)
+t2b <- seq(0, 120, by=0.1)
+param2b <- c(V=1, Cl=0.05)
+
+res2b <- pkmodel(time = t2b, treatment = adm2b, parameter = param2b)
+
+ggplot(data=res2b, aes(x=time, y=cc)) + geom_line(size=1) +
+  xlab("time(h)") + ylab("concentration(mg/L)") +
+  theme_bw() + base_theme()
+```
+
+## 2c. Overlay PK profiles of patient with normal clearance and decreased clearance (PK profile of 100 mg iv bolus, LD(t=0), MD (q=6hr), V = 1 L, CL = 0.1 L/hr, 0.05 L/hr, 0.075 L/hr)
+```{r}
+combined_output <- bind_rows(res2 %>% mutate(profile = "100mg Q6, CL = 0.1 L/hr"),
+                              res2a %>% mutate(profile = "100mg Q6, CL = 0.075 L/hr"),
+                              res2b %>% mutate(profile = "100mg Q6, CL = 0.05 L/hr"))
+combined_output %>%
+  ggplot(aes(x=time, y=cc, color=factor(profile))) + geom_line() +
+  xlab("time(h)") + ylab("concentration (mg/L)") +
+  scale_color_discrete(name = "Clearance Values") + theme_bw() + base_theme()
 ```
 
 # 3. pk profile of 100 mg iv bolus, ld (t=0), md (q=12 hr), cl =0.1 l/hr, v = 1l
@@ -152,7 +204,7 @@ combined_output %>%
 
 # 10. Overlay plots - iv
 ```{r}
-combined_output <- bind_rows(res %>% mutate(profile = "100mg SD"),
+combined_output <- bind_rows(res1 %>% mutate(profile = "100mg SD"),
                              res2 %>% mutate(profile = "100mg Q6"),
                              res3 %>% mutate(profile = "100mg Q12"),
                              res4 %>% mutate(profile = "100mg Q24"))
