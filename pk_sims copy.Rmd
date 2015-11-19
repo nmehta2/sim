@@ -1,0 +1,134 @@
+---
+output: pdf_document
+---
+```{r libraries}
+# required libraries
+library("PKPDmisc")
+library("ggplot2")
+library("mlxR")
+library("reshape2")
+library("knitr")
+library("dplyr")
+```
+
+```{r}
+knitr::opts_chunk$set(echo=FALSE)
+```
+
+# 1. pk profile of 100 mg iv bolus (sd), CL = 0.1 L/hr, V = 1 L
+```{r}
+# where to start analysis
+adm <- list(time=c(0), amount=100)
+t   <- seq(0, 120, by=0.1)
+param   <- c(V=1, Cl=0.1)
+
+res   <- pkmodel(time = t, treatment = adm, parameter = param)
+
+ggplot(data=res, aes(x=time, y=cc)) + geom_line(size=1) +
+  xlab("time (h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
+```
+
+# 2. pk profile of 100 mg iv bolus, ld (t = 0), md (q= 6 hr), cl = 0.1 L/hr, v = 1 L
+```{r}
+adm2 <- list(time=seq(0, 120, by = 6), amount=100)
+t2 <- seq(0, 120, by=0.1)
+param2 <- c(V=1, Cl=0.1)
+
+res2 <- pkmodel(time = t2, treatment = adm2, parameter = param2)
+
+ggplot(data=res2, aes(x=time, y=cc)) + geom_line(size=1) +
+        xlab("time (h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
+```
+
+# 3. pk profile of 100 mg iv bolus, ld (t=0), md (q=12 hr), cl =0.1 l/hr, v = 1l
+```{r}
+adm3 <- list(time=seq(0, 120, by = 12), amount = 100)
+t3 <- seq(0, 120, by = 0.1)
+param3 <- c(V=1, Cl=0.1)
+
+res3 <- pkmodel(time = t3, treatment = adm3, parameter = param3)
+
+ggplot(data=res3, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
+```
+
+# 4. pk profile of 100 mg iv bolus, ld (t=0), md (q=24 hr), cl=0.1 l/hr, v=1l
+```{r}
+adm4 <- list(time=seq(0, 120, by = 24), amount = 100)
+t4 <- seq(0, 120, by = 0.1)
+param4 <- c(V=1, Cl=0.1)
+
+res4 <- pkmodel(time= t4, treatment= adm4, parameter= param4)
+
+ggplot(data=res4, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration(mg/L)") + theme_bw() + base_theme()
+```
+
+# 3. pk profile of 100 mg oral (sd), Cl = 0.1 L/hr, V = 1 L, ka = 0.5/hr, F = 0.8
+```{r}
+adm5 <- list(time=c(0), amount=100)
+t5 <- seq(0, 120, by = 0.1)
+param5 <- c(V=1, Cl=0.1, ka=0.5, p=0.8)
+
+res5 <- pkmodel(time = t5, treatment = adm5, parameter = param5)
+
+ggplot(data=res5, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time (h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
+```
+
+# 4. pk profile of 100 mg oral, ld (t=0), md (q= 6 hr), Cl = 0.1 L/hr, V = 1 L, ka = 0.5/hr, F = 0.8
+```{r}
+adm6 <- list(time=seq(0, 120, by=6), amount=100)
+t6 <- seq(0, 120, by = 1)
+param6 <- c(V=1, Cl=0.1, ka=0.5, p=0.8)
+
+res6 <- pkmodel(time = t6, treatment = adm6, parameter = param6)
+
+ggplot(data=res6, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time (h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
+```
+
+# 5. pk profile of 100 mg oral, ld (t=0), md (q=12 hr), cl=0.1 l/hr, v=1l, ka=0.5/hr, f=0.8
+```{r}
+adm7 <- list(time=seq(0, 120, by = 12), amount = 100)
+t7 <- seq(0, 120, by = 1)
+param7 <- c(V=1, Cl=0.1, ka=0.5, p=0.8)
+
+res7 <- pkmodel(time = t7, treatment= adm7, parameter = param7)
+
+ggplot(data=res7, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
+```
+
+# 6. pk profile of 100 mg oral, ld (t=0), md (q=24 hr), cl = 0.1 l/hr, v=1l, ka=0.5/hr, f=0.8
+```{r}
+adm8 <- list(time= seq(0, 120, by = 24), amount=100)
+t8 <- seq(0, 120, by = 1)
+param8 <- c(V=1, Cl=0.1, ka=0.5, p=0.8)
+
+res8 <- pkmodel(time = t8, treatment = adm8, parameter = param8)
+
+ggplot(data=res8, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration(mg/L)") + theme_bw() + base_theme()
+```
+
+# Overlay plots - oral
+```{r}
+combined_output <- bind_rows(res8 %>% mutate(profile = "100mg Q24"),
+                           res7 %>% mutate(profile = "100mg Q12"),
+                           res6 %>% mutate(profile= "100mg Q6"),
+                           res5 %>% mutate(profile= "100mg SD"))
+
+combined_output %>%
+    ggplot(aes(x = time, y = cc, color = factor(profile))) + 
+    geom_line() + xlab("time(h)") + ylab("concentration (mg/L)") +
+    scale_color_discrete(name = "Dosing Regimen") + theme_bw() + base_theme()
+```
+
+# Overlay plots - iv
+```{r}
+combined_output <- bind_rows(res %>% mutate(profile = "100mg SD"),
+                             res2 %>% mutate(profile = "100mg Q6"),
+                             res3 %>% mutate(profile = "100mg Q12"),
+                             res4 %>% mutate(profile = "100mg Q24"))
+
+
+combined_output %>%
+  ggplot(aes(x = time, y = cc, color = factor(profile))) +
+  geom_line() + xlab("time(h)") + ylab("concentration (mg/L)") +
+  scale_color_discrete(name = "Dosing Regimen") + theme_bw() + base_theme()
+```

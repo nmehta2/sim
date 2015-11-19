@@ -96,7 +96,6 @@ res2a <- pkmodel(time = t2a, treatment = adm2a, parameter = param2a)
 ggplot(data=res2a, aes(x=time, y=cc)) + geom_line(size=1) +
   xlab("time(h)") + ylab("concentration(mg/L)") +
   theme_bw() + base_theme()
-
 ```
 
 ## 2b. Patient's clearance decreases by 50%. (PK profile of 100 mg iv bolus, LD (t=0), MD (q=6hr), CL = 0.05 L/hr, V= 1 L)
@@ -134,7 +133,40 @@ res3 <- pkmodel(time = t3, treatment = adm3, parameter = param3)
 ggplot(data=res3, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
 ```
 
-# 4. pk profile of 100 mg iv bolus, ld (t=0), md (q=24 hr), cl=0.1 l/hr, v=1l
+## 3a. Patient's clearance decreases by 25%. (PK profile of 100 mg iv bolus, LD (t=0), MD (q=12hr), CL = 0.075 L/hr, V= 1 L)
+```{r}
+adm3a <- list(time=seq(0, 120, by = 12), amount = 100)
+t3a <- seq(0, 120, by = 0.1)
+param3a <- c(V=1, Cl=0.075)
+
+res3a <- pkmodel(time = t3a, treatment = adm3a, parameter = param3a)
+
+ggplot(data=res3a, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
+```
+
+## 3b. Patient's clearance decreases by 50%. (PK profile of 100 mg iv bolus, LD (t=0), MD (q=12hr), CL = 0.05 L/hr, V= 1 L)
+```{r}
+adm3b <- list(time=seq(0, 120, by = 12), amount = 100)
+t3b <- seq(0, 120, by = 0.1)
+param3b <- c(V=1, Cl=0.05)
+
+res3b <- pkmodel(time = t3b, treatment = adm3b, parameter = param3b)
+
+ggplot(data=res3b, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration(mg/L)") + theme_bw() + base_theme()
+```
+
+## 3c. Overlay PK profiles of patient with normal clearance and decreased clearance (PK profile of 100 mg iv bolus, LD(t=0), MD (q=12hr), V = 1 L, CL = 0.1 L/hr, 0.05 L/hr, 0.075 L/hr)
+```{r}
+combined_output <- bind_rows(res3 %>% mutate(profile = "100mg Q12, CL = 0.1 L/hr"),
+                              res3a %>% mutate(profile = "100mg 12, CL = 0.075 L/hr"),
+                              res3b %>% mutate(profile = "100mg Q12, CL = 0.05 L/hr"))
+combined_output %>%
+  ggplot(aes(x=time, y=cc, color=factor(profile))) + geom_line() +
+  xlab("time(h)") + ylab("concentration (mg/L)") +
+  scale_color_discrete(name = "Clearance Values") + theme_bw() + base_theme()
+```
+
+# 4. PK profile of 100 mg IV bolus, LD (t=0), MD (q=24 hr), CL=0.1 L/hr, V=1L
 ```{r}
 adm4 <- list(time=seq(0, 120, by = 24), amount = 100)
 t4 <- seq(0, 120, by = 0.1)
@@ -143,6 +175,40 @@ param4 <- c(V=1, Cl=0.1)
 res4 <- pkmodel(time= t4, treatment= adm4, parameter= param4)
 
 ggplot(data=res4, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration(mg/L)") + theme_bw() + base_theme()
+```
+
+## 4a. Patient's clearance decreases by 25%. (PK profile of 100 mg IV bolus, LD (t=0), MD (q=24hr), CL = 0.075 L/hr, V= 1 L)
+```{r}
+adm4a <- list(time=seq(0, 120, by = 24), amount = 100)
+t4a <- seq(0, 120, by = 0.1)
+param4a <- c(V=1, Cl=0.075)
+
+res4a <- pkmodel(time = t4a, treatment = adm4a, parameter = param4a)
+
+ggplot(data=res4a, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration(mg/L)") + theme_bw() + base_theme()
+```
+
+## 4b. Patient's clearance decreases by 50%. (PK profile of 100 mg iv bolus, LD (t=0), MD (q=24hr), CL = 0.05 L/hr, V= 1 L)
+```{r}
+adm4b <- list(time=seq(0, 120, by = 24), amount = 100)
+t4b <- seq(0, 120, by = 0.1)
+param4b <- c(V=1. Cl=0.05)
+
+res4b <- pkmodel(time = t4b, treatmet = adm4b, parameter = param4b)
+
+ggplot(data=res4b, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration(mg/L)") + theme_bw() + base_theme()
+```
+
+## 4c. Overlay PK profiles of patient with normal clearance and decreased clearance (PK profile of 100 mg iv bolus, LD(t=0), MD (q=24hr), V = 1 L, CL = 0.1 L/hr, 0.05 L/hr, 0.075 L/hr)
+```{r}
+combined_output <- bind_rows(res4 %>% mutate(profile = "100mg Q24, CL = 0.1 L/hr"),
+                              res4a %>% mutate(profile = "100mg Q24, CL = 0.075 L/hr"),
+                              res4b %>% mutate(profile = "100mg Q24, CL = 0.05 L/hr"))
+
+combined_output %>%
+  ggplot(aes(x=time, y=cc, color=factor(profile))) + geom_line() +
+  xlab("time(h)") + ylab("concentration(mg/L)") +
+  scale_color_discrete(name = "Clearance Values") + theme_bw() + base_theme()
 ```
 
 # 5. pk profile of 100 mg oral (sd), Cl = 0.1 L/hr, V = 1 L, ka = 0.5/hr, F = 0.8
@@ -156,29 +222,152 @@ res5 <- pkmodel(time = t5, treatment = adm5, parameter = param5)
 ggplot(data=res5, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time (h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
 ```
 
-# 6. pk profile of 100 mg oral, ld (t=0), md (q= 6 hr), Cl = 0.1 L/hr, V = 1 L, ka = 0.5/hr, F = 0.8
+## 5a. Patient's clearance decreases by 25%. (PK profile of 100 mg oral, SD (t=0), CL = 0.075 L/hr, V= 1 L, ka = 0.5/hr, F=0.8)
+```{r}
+adm5a <- list(time=c(0), amount=100)
+t5a <- seq(0, 120, by = 0.1)
+param5a <- c(V=1, Cl=0.075, ka=0.5, p=0.8)
+
+res5a <- pkmodel(time = t5a, treatment=adm5a, parameter = param5a)
+
+ggplot(data=res5a, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration(mg/L)") + theme_bw() + base_theme()
+```
+
+## 5b. Patient's clearance decreases by 50%. (PK profile of 100 mg oral, SD (t=0), CL = 0.05 L/hr, V= 1 L)
+```{r}
+adm5b <- list(time=c(0), amount=100)
+t5b <- seq(0, 120, by = 0.1)
+param5b <- c(V=1, Cl=0.05, ka=0.5, p=0.8)
+
+res5b <- pkmodel(time=t5b, treatment=adm5b, parameter=param5b)
+
+ggplot(data=res5b, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration(mg/L)") + theme_bw() + base_theme()
+```
+
+## 5c. Patient consumes a high fat meal 48 hours after beginning treatment, which reduces bioavailability by 50%. (PK profile of 100)
+
+## 5d. Overlay plot of patient with decreased clearance and normal clearance. (PK profile of 100 mg oral, SD (t=0), CL = 1, 0.075, 0.05 L/hr, V=1, Ka = 0.8)
+
+## 5e. Overlay plot of patient with normal bioavailability and decreased bioavailability (PK profile of 100 mg oral, SD(t=0), CL = 1 L/hr, Ka = 0.8, 0.4)
+
+# 6. Patient is administered 100 mg oral loading dose and a 100 mg maintenance dose every 6 hours.
+### PK profile of 100 mg oral, LD (t=0), MD (q= 6 hr), CL = 0.1 L/hr, V = 1 L, ka = 0.5/hr, F = 0.8
 ```{r}
 adm6 <- list(time=seq(0, 120, by=6), amount=100)
-t6 <- seq(0, 120, by = 1)
+t6 <- seq(0, 120, by = 0.1)
 param6 <- c(V=1, Cl=0.1, ka=0.5, p=0.8)
 
 res6 <- pkmodel(time = t6, treatment = adm6, parameter = param6)
 
 ggplot(data=res6, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time (h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
 ```
+  ## 6a. Patient's clearance decreases by 25%.
+### PK profile of 100 mg oral, LD (t=0), MD (q= 6 hr), CL = 0.075 L/hr, V= 1 L, ka = 0.5/hr, F=0.8
+```{r}
+adm5a <- list(time=c(0, 120, by = 6), amount=100)
+t5a <- seq(0, 120, by = 0.1)
+param5a <- c(V=1, Cl=0.075, ka=0.5, p=0.8)
 
-# 7. pk profile of 100 mg oral, ld (t=0), md (q=12 hr), cl=0.1 l/hr, v=1l, ka=0.5/hr, f=0.8
+res5a <- pkmodel(time = t5a, treatment=adm5a, parameter = param5a)
+
+ggplot(data=res5a, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration(mg/L)") + theme_bw() + base_theme()
+```
+
+  ## 6b. Patient's clearance decreases by 50%.
+### PK profile of 100 mg oral, LD (t=0), MD (q= 6 hr), CL = 0.05 L/hr, V= 1 L, ka = 0.5/hr, F=0.8
+```{r}
+adm5b <- list(time=c(0, 120, by = 6), amount=100)
+t5b <- seq(0, 120, by = 0.1)
+param5b <- c(V=1, Cl=0.05, ka=0.5, p=0.8)
+
+res5b <- pkmodel(time=t5b, treatment=adm5b, parameter=param5b)
+
+ggplot(data=res5b, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration(mg/L)") + theme_bw() + base_theme()
+```
+
+  ## 6c. Patient consumes a high fat meal 48 hours after beginning treatment, which reduces bioavailability by 50%.
+### PK profile of 100 mg oral, LD (t=0), MD (q=6 hr), CL = 1 L/hr, V = 1 L, ka = 0.5/hr, F=0.8
+```{r}
+
+```
+
+  ## 6d. Overlay plot of patient with decreased clearance and normal clearance.
+### PK profile of 100 mg oral, LD (t=0), MD (q=6 hr), CL = 1, 0.075, 0.05 L/hr, V = 1 L, ka = 0.5/hr, F=0.8
+```{r}
+
+```
+
+  ## 6e. Overlay plot of patient with normal bioavailability and decreased bioavailability.
+### PK profile of 100 mg oral, LD (t=0), MD (q=6 hr), CL = 1 L/hr, V = 1 L, ka = 0.5/hr, F=0.8, 0.4
+```{r}
+
+```
+
+# 7. Patient is administered 100 mg oral loading dose, followed by a maintenance dose of 100 mg every 12 hours.
+### PK profile of 100 mg oral, LD (t=0), MD (q=12 hr), CL=0.1 L/hr, V=1L, ka=0.5/hr, F=0.8
 ```{r}
 adm7 <- list(time=seq(0, 120, by = 12), amount = 100)
-t7 <- seq(0, 120, by = 1)
+t7 <- seq(0, 120, by = 0.1)
 param7 <- c(V=1, Cl=0.1, ka=0.5, p=0.8)
 
 res7 <- pkmodel(time = t7, treatment= adm7, parameter = param7)
 
-ggplot(data=res7, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration (mg/L)") + theme_bw() + base_theme()
+ggplot(data=res7, aes(x=time, y=cc)) +
+  geom_line(size=1) +
+    xlab("time(h)") + ylab("concentration (mg/L)") +
+      theme_bw() + base_theme()
 ```
 
-# 8. pk profile of 100 mg oral, ld (t=0), md (q=24 hr), cl = 0.1 l/hr, v=1l, ka=0.5/hr, f=0.8
+  ## 7a. Patient's clearance decreases by 25%.
+  ### PK profile of 100 mg oral, LD (t=0), MD (q= 12 hr), CL = 0.075 L/hr, V= 1 L, ka = 0.5/hr, F=0.8
+```{r}
+adm7a <- list(time=seq(0, 120, by = 12), amount = 100)
+t7a <- seq(0, 120, by = 0.1)
+param7a <- c(V=1, Cl=0.0.075, ka=0.5, p=0.8)
+
+res7a <- pkmodel(time = t7a, treatment = adm7a, parameter = param7a)
+
+ggplot(data=res7a, aes(x=time, y=cc)) +
+  geom_line(size=1) +
+    xlab("time(h)") + ylab("concentration(mg/L)") +
+      theme_bw() + base_theme()
+```
+
+  ## 7b. Patient's clearance decreases by 50%.
+  ### PK profile of 100 mg oral, LD (t=0), MD (q=12 hr), CL = 0.05 L/hr, V= 1 L, ka=0.5/hr, F=0.8
+```{r}
+adm7b <- list(time=seq(0, 120, by = 12), amount = 100)
+t7b <- seq(0, 120, by = 0.1)
+param7b <- c(V=1, Cl=0.05, ka=0.5, p=0.8)
+
+res7b <- pkmodel(time = t7b, treatment = adm7b, parameter = param7b)
+
+ggplot(data=res7b, aes(x=time, y=cc)) +
+  geom_size(line=1) +
+    xlab("time(h)") + ylab("concentration(mg/L)") +
+      theme_bw() + base_theme()
+```
+
+  ## 7c. Patient consumes a high fat meal 48 hours after beginning treatment, which reduces bioavailability by 50%.
+  ### PK profile of 100 mg oral, LD (t=0), MD (q=12 hr), CL = 1 L/hr, V = 1 L, ka = 0.5/hr, F=0.4
+```{r}
+
+```
+
+ ## 7d. Overlay plot of patient with decreased clearances and normal clearance.
+ ### PK profile of 100 mg oral, LD (t=0), MD (q=6 hr), CL = 1, 0.075, 0.05 L/hr, V = 1 L, ka = 0.5/hr, F=0.8
+```{r}
+
+```
+
+  ## 7e. Overlay plot of patient with normal bioavailability and decreased bioavailability.
+  ### PK profile of 100 mg oral, LD (t=0), MD (q=6 hr), CL = 1 L/hr, V = 1 L, ka = 0.5/hr, F=0.8, 0.4
+```{r}
+
+```
+
+# 8. Patient is administered a 100 mg loading dose, followed by a maintenance dose of 100 mg every 24 hours.
+### PK profile of 100 mg oral, LD (t=0), MD (q=24 hr), CL = 0.1 L/hr, V=1L, ka=0.5/hr, F=0.8
 ```{r}
 adm8 <- list(time= seq(0, 120, by = 24), amount=100)
 t8 <- seq(0, 120, by = 1)
@@ -188,6 +377,9 @@ res8 <- pkmodel(time = t8, treatment = adm8, parameter = param8)
 
 ggplot(data=res8, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + ylab("concentration(mg/L)") + theme_bw() + base_theme()
 ```
+
+  ## 8a. Patient's clearance decreases by 25%.
+  ### PK profile of
 
 # 9. Overlay plots - oral
 ```{r}
