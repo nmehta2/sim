@@ -54,7 +54,7 @@ ggplot(data=res1a, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + yl
 ```
 
 ### 1b. Patient's clearance decreases by 50%. 
-##### (PK profile of 100 mg oral, SD (t=0), CL = 0.05 L/hr, V= 1 L)
+##### (PK profile of 100 mg oral, SD (t=0), CL = 0.05 L/hr, V= 1 L, ka = 0.5/hr, F =0.8)
 ```{r}
 adm1b <- list(time=c(0), amount=100)
 t1b <- seq(0, 120, by = 0.1)
@@ -66,7 +66,7 @@ ggplot(data=res1b, aes(x=time, y=cc)) + geom_line(size=1) + xlab("time(h)") + yl
 ```
 
 ### 1c. Overlay plot of patient with decreased clearance and normal clearance.
-##### (PK profile of 100 mg oral, SD (t=0), CL = 0.1, 0.075, 0.05 L/hr, V=1, Ka = 0.8)
+##### (PK profile of 100 mg oral, SD (t=0), CL = 0.1, 0.075, 0.05 L/hr, V=1, ka = 0.5/hr, F = 0.8)
 ```{r}
 combined_output_1_cl <- bind_rows(res1 %>% mutate(profile = "100mg Q24, CL = 0.1 L/hr"),
                               res1a %>% mutate(profile = "100mg Q24, CL = 0.075 L/hr"),
@@ -154,11 +154,11 @@ combined_output %>%
           theme_bw() + base_theme()
 ```
 
-### 2e. Overlay plot of patient with normal bioavailability and decreased bioavailability.
+### 2e. Overlay plot of patient with normal bioavailability and decreased bioavailability after consuming high fat meal.
 ##### (PK profile of 100 mg oral, LD (t=0), MD (q=6 hr), CL = 0.1 L/hr, V = 1 L, ka = 0.5/hr, F=0.8, 0.4)
 ```{r}
 combined_output_2_f <- bind_rows(res2 %>% mutate(profile = "100 mg Q6, F=0.8"),
-                                 res2c %>% mutate(profile = "100 mg Q6, F=0.4"))
+                                 res2c %>% mutate(profile = "100 mg Q6, F=0.4 after 48 hours"))
 
 combined_output_2_f %>%
     ggplot(aes(x=time, y=cc, color=factor(profile))) + geom_line() +
@@ -244,7 +244,7 @@ combined_output %>%
           theme_bw() + base_theme()
 ```
 
-### 3e. Overlay plot of patient with normal bioavailability and decreased bioavailability.
+### 3e. Overlay plot of patient with normal bioavailability and decreased bioavailability after consuming high fat meal.
 ##### (PK profile of 100 mg oral, LD (t=0), MD (q=12 hr), CL = 0.1 L/hr, V = 1 L, ka = 0.5/hr, F=0.8, 0.4)
 ```{r}
 combined_output_3_f <- bind_rows(res3 %>% mutate(profile = "100 mg Q12, F=0.8"),
@@ -333,7 +333,7 @@ combined_output %>%
           theme_bw() + base_theme()
 ```
 
-### 4e. Overlay plot of patient with normal bioavailability and decreased bioavailability.
+### 4e. Overlay plot of patient with normal bioavailability and decreased bioavailability after consuming high fat meal.
 ##### (PK profile of 100 mg oral, LD (t=0), MD (q=6 hr), CL = 0.1 L/hr, V = 1 L, ka = 0.5/hr, F=0.8, 0.4)
 ```{r}
 combined_output <- bind_rows(res4 %>% mutate(profile = "100mg Q24, F = 0.8"),
