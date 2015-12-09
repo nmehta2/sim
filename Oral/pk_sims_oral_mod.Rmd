@@ -2,7 +2,7 @@
 title: "PK Simulations of 100 mg Oral Medication in Patients with Modified CL and F"
 author: "Neha Mehta"
 date: "December 7, 2015"
-output: html_document
+output: word_document
 ---
 
 ```{r normalize_path, include=F, eval=F}
@@ -31,6 +31,7 @@ knitr::opts_chunk$set(echo=FALSE)
 
 # 1. PK profile of 100 mg oral (SD)
 ##### (PK profile of 100 mg oral, SD (t=0), CL = 0.1 L/hr, V = 1 L, ka = 0.5/hr, F = 0.8)
+
 ```{r}
 adm1 <- list(time=c(0), amount=100)
 t1 <- seq(0, 120, by = 0.1)

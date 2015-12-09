@@ -1,0 +1,6 @@
+
+          [LONGITUDINAL]
+          input = {V, Cl}
+          EQUATION:
+          cc = pkmodel(V, Cl)
+          

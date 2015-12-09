@@ -1,0 +1,355 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+    \usepackage{xltxtra,xunicode}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{{#1}}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{{#1}}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{{#1}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{{#1}}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\RegionMarkerTok}[1]{{#1}}
+\newcommand{\ErrorTok}[1]{\textbf{{#1}}}
+\newcommand{\NormalTok}[1]{{#1}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={Neha Mehta},
+            pdftitle={PK Simulations of 100 mg IV in Patients with Modified CL and F},
+            colorlinks=true,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=magenta,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\setcounter{secnumdepth}{0}
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{PK Simulations of 100 mg IV in Patients with Modified CL and F}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{Neha Mehta}
+  \preauthor{\centering\large\emph}
+  \postauthor{\par}
+  \predate{\centering\large\emph}
+  \postdate{\par}
+  \date{2015-12-09}
+
+
+
+\begin{document}
+
+\maketitle
+
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# required libraries}
+\KeywordTok{library}\NormalTok{(}\StringTok{"PKPDmisc"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"ggplot2"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"dplyr"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+## 
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+## 
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(}\StringTok{"mlxR"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"reshape2"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"knitr"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr::opts_chunk$}\KeywordTok{set}\NormalTok{(}\DataTypeTok{echo=}\OtherTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{\emph{IV FORMULATION}}\label{iv-formulation}
+
+\section{1. PK profile of 100 mg IV bolus administered as a single
+dose.}\label{pk-profile-of-100-mg-iv-bolus-administered-as-a-single-dose.}
+
+\subparagraph{(PK profile of 100 mg IV bolus (SD), CL = 0.1 L/hr, V = 1
+L)}\label{pk-profile-of-100-mg-iv-bolus-sd-cl-0.1-lhr-v-1-l}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+\subsubsection{1a. Patient's clearance decreases by
+25\%.}\label{a.-patients-clearance-decreases-by-25.}
+
+\subparagraph{(PK profile of 100 mg IV bolus (SD), CL = 0.075 L/hr, V= 1
+L)}\label{pk-profile-of-100-mg-iv-bolus-sd-cl-0.075-lhr-v-1-l}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\subsubsection{1b. Patient's clearance decreases by
+50\%.}\label{b.-patients-clearance-decreases-by-50.}
+
+\subparagraph{(PK profile of 100 mg IV bolus (SD), CL = 0.05 L/hr, V = 1
+L)}\label{pk-profile-of-100-mg-iv-bolus-sd-cl-0.05-lhr-v-1-l}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+\subsubsection{1c. Overlay PK profiles of patient with normal clearance
+and decreased
+clearance}\label{c.-overlay-pk-profiles-of-patient-with-normal-clearance-and-decreased-clearance}
+
+\subparagraph{(PK profile of 100 mg IV bolus (SD), V = 1 L, CL = 0.1
+L/hr, 0.05 L/hr, 0.075
+L/hr)}\label{pk-profile-of-100-mg-iv-bolus-sd-v-1-l-cl-0.1-lhr-0.05-lhr-0.075-lhr}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\section{2. PK profile of 100 mg IV bolus administered every 6
+hours}\label{pk-profile-of-100-mg-iv-bolus-administered-every-6-hours}
+
+\subparagraph{(PK profile of 100 mg IV bolus, LD (t = 0), MD (q= 6 hr),
+CL = 0.1 L/hr, V = 1
+L)}\label{pk-profile-of-100-mg-iv-bolus-ld-t-0-md-q-6-hr-cl-0.1-lhr-v-1-l}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\subsubsection{2a. Patient's clearance decreases by
+25\%.}\label{a.-patients-clearance-decreases-by-25.-1}
+
+\subparagraph{(PK profile of 100 mg iv bolus, LD (t=0), MD (q=6hr), CL =
+0.075 L/hr, V= 1
+L)}\label{pk-profile-of-100-mg-iv-bolus-ld-t0-md-q6hr-cl-0.075-lhr-v-1-l}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\subsubsection{2b. Patient's clearance decreases by
+50\%.}\label{b.-patients-clearance-decreases-by-50.-1}
+
+\subparagraph{(PK profile of 100 mg IV bolus, LD (t=0), MD (q=6hr), CL =
+0.05 L/hr, V= 1
+L)}\label{pk-profile-of-100-mg-iv-bolus-ld-t0-md-q6hr-cl-0.05-lhr-v-1-l}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\subsubsection{2c. Overlay PK profiles plot of patient with normal
+clearance and decreased
+clearance}\label{c.-overlay-pk-profiles-plot-of-patient-with-normal-clearance-and-decreased-clearance}
+
+\subparagraph{(PK profile of 100 mg IV bolus, LD(t=0), MD (q=6hr), V = 1
+L, CL = 0.1 L/hr, 0.05 L/hr, 0.075
+L/hr)}\label{pk-profile-of-100-mg-iv-bolus-ldt0-md-q6hr-v-1-l-cl-0.1-lhr-0.05-lhr-0.075-lhr}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+\section{3. PK profile of 100 mg IV bolus given every 12
+hours}\label{pk-profile-of-100-mg-iv-bolus-given-every-12-hours}
+
+\subparagraph{(PK profile of 100 mg IV bolus, LD (t=0), MD (q=12 hr), CL
+=0.1 L/hr, V = 1
+L)}\label{pk-profile-of-100-mg-iv-bolus-ld-t0-md-q12-hr-cl-0.1-lhr-v-1-l}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\subsubsection{3a. Patient's clearance decreases by
+25\%.}\label{a.-patients-clearance-decreases-by-25.-2}
+
+\subparagraph{(PK profile of 100 mg IV bolus, LD (t=0), MD (q=12hr), CL
+= 0.075 L/hr, V= 1
+L)}\label{pk-profile-of-100-mg-iv-bolus-ld-t0-md-q12hr-cl-0.075-lhr-v-1-l}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\subsubsection{3b. Patient's clearance decreases by
+50\%.}\label{b.-patients-clearance-decreases-by-50.-2}
+
+\subparagraph{(PK profile of 100 mg IV bolus, LD (t=0), MD (q=12hr), CL
+= 0.05 L/hr, V= 1
+L)}\label{pk-profile-of-100-mg-iv-bolus-ld-t0-md-q12hr-cl-0.05-lhr-v-1-l}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-12-1.pdf}
+
+\subsubsection{3c. Overlay PK profiles of patient with normal clearance
+and decreased
+clearance}\label{c.-overlay-pk-profiles-of-patient-with-normal-clearance-and-decreased-clearance-1}
+
+\subparagraph{(PK profile of 100 mg iv bolus, LD(t=0), MD (q=12hr), V =
+1 L, CL = 0.1 L/hr, 0.05 L/hr, 0.075
+L/hr)}\label{pk-profile-of-100-mg-iv-bolus-ldt0-md-q12hr-v-1-l-cl-0.1-lhr-0.05-lhr-0.075-lhr}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\section{4. PK profile of 100 mg IV bolus administered every 24
+hours}\label{pk-profile-of-100-mg-iv-bolus-administered-every-24-hours}
+
+\subparagraph{(PK profile of 100 mg IV bolus, LD (t=0), MD (q=24 hr),
+CL=0.1 L/hr, V =
+1L)}\label{pk-profile-of-100-mg-iv-bolus-ld-t0-md-q24-hr-cl0.1-lhr-v-1l}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+\subsubsection{4a. Patient's clearance decreases by
+25\%.}\label{a.-patients-clearance-decreases-by-25.-3}
+
+\subparagraph{(PK profile of 100 mg IV bolus, LD (t=0), MD (q=24hr), CL
+= 0.075 L/hr, V= 1
+L)}\label{pk-profile-of-100-mg-iv-bolus-ld-t0-md-q24hr-cl-0.075-lhr-v-1-l}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+\subsubsection{4b. Patient's clearance decreases by
+50\%.}\label{b.-patients-clearance-decreases-by-50.-3}
+
+\subparagraph{(PK profile of 100 mg IV bolus, LD (t=0), MD (q=24hr), CL
+= 0.05 L/hr, V= 1
+L)}\label{pk-profile-of-100-mg-iv-bolus-ld-t0-md-q24hr-cl-0.05-lhr-v-1-l}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+\subsubsection{4c. Overlay PK profiles of patient with normal clearance
+and decreased
+clearance}\label{c.-overlay-pk-profiles-of-patient-with-normal-clearance-and-decreased-clearance-2}
+
+\subparagraph{(PK profile of 100 mg iv bolus, LD(t=0), MD (q=24hr), V =
+1 L, CL = 0.1 L/hr, 0.05 L/hr, 0.075
+L/hr)}\label{pk-profile-of-100-mg-iv-bolus-ldt0-md-q24hr-v-1-l-cl-0.1-lhr-0.05-lhr-0.075-lhr}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+\section{5. Overlay plots of all dosing
+intervals}\label{overlay-plots-of-all-dosing-intervals}
+
+\includegraphics{pk_sims_iv_mod_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+\begin{verbatim}
+## Session info --------------------------------------------------------------
+\end{verbatim}
+
+\begin{verbatim}
+##  setting  value                       
+##  version  R version 3.2.2 (2015-08-14)
+##  system   x86_64, darwin13.4.0        
+##  ui       X11                         
+##  language (EN)                        
+##  collate  en_US.UTF-8                 
+##  tz       America/New_York            
+##  date     2015-12-09
+\end{verbatim}
+
+\begin{verbatim}
+## Packages ------------------------------------------------------------------
+\end{verbatim}
+
+\begin{verbatim}
+##  package    * version  date       source                            
+##  assertthat   0.1      2013-12-06 CRAN (R 3.2.0)                    
+##  colorspace   1.2-6    2015-03-11 CRAN (R 3.2.0)                    
+##  DBI          0.3.1    2014-09-24 CRAN (R 3.2.0)                    
+##  devtools     1.9.1    2015-09-11 CRAN (R 3.2.0)                    
+##  digest       0.6.8    2014-12-31 CRAN (R 3.2.0)                    
+##  dplyr      * 0.4.3    2015-09-01 CRAN (R 3.2.0)                    
+##  evaluate     0.8      2015-09-18 CRAN (R 3.2.0)                    
+##  formatR      1.2.1    2015-09-18 CRAN (R 3.2.0)                    
+##  ggplot2    * 1.0.1    2015-03-17 CRAN (R 3.2.0)                    
+##  gtable       0.1.2    2012-12-05 CRAN (R 3.2.0)                    
+##  htmltools    0.2.6    2014-09-08 CRAN (R 3.2.0)                    
+##  knitr      * 1.11     2015-08-14 CRAN (R 3.2.2)                    
+##  labeling     0.3      2014-08-23 CRAN (R 3.2.0)                    
+##  lazyeval     0.1.10   2015-01-02 CRAN (R 3.2.0)                    
+##  magrittr     1.5      2014-11-22 CRAN (R 3.2.0)                    
+##  MASS         7.3-44   2015-08-30 CRAN (R 3.2.0)                    
+##  memoise      0.2.1    2014-04-22 CRAN (R 3.2.0)                    
+##  mlxR       * 2.2.0    2015-05-31 CRAN (R 3.2.0)                    
+##  munsell      0.4.2    2013-07-11 CRAN (R 3.2.0)                    
+##  PKPDmisc   * 0.3.4.3  2015-10-17 Github (dpastoor/PKPDmisc@2d99b00)
+##  plyr         1.8.3    2015-06-12 CRAN (R 3.2.0)                    
+##  proto        0.3-10   2012-12-22 CRAN (R 3.2.0)                    
+##  R6           2.1.1    2015-08-19 CRAN (R 3.2.0)                    
+##  Rcpp         0.12.1   2015-09-10 CRAN (R 3.2.0)                    
+##  reshape2   * 1.4.1    2014-12-06 CRAN (R 3.2.0)                    
+##  rmarkdown    0.8.1    2015-10-10 CRAN (R 3.2.2)                    
+##  scales       0.3.0    2015-08-25 CRAN (R 3.2.0)                    
+##  stringi      0.5-5    2015-06-29 CRAN (R 3.2.0)                    
+##  stringr      1.0.0    2015-04-30 CRAN (R 3.2.0)                    
+##  XML          3.98-1.3 2015-06-30 CRAN (R 3.2.0)                    
+##  yaml         2.1.13   2014-06-12 CRAN (R 3.2.0)
+\end{verbatim}
+
+\end{document}
