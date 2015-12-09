@@ -27,6 +27,8 @@ library("knitr")
 knitr::opts_chunk$set(echo=FALSE)
 ```
 
+# *ORAL FORMULATION*
+
 # 1. PK profile of 100 mg oral (SD)
 ##### (PK profile of 100 mg oral, SD (t=0), CL = 0.1 L/hr, V = 1 L, ka = 0.5/hr, F = 0.8)
 ```{r}
